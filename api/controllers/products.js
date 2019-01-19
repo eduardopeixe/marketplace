@@ -87,7 +87,6 @@ const getProductById = (req, res, next) => {
 };
 
 const purchase = async (req, res, next) => {
-  console.log('ttttttttttt', req.params);
   const id = req.params.id;
   if (!id) {
     res
@@ -96,25 +95,37 @@ const purchase = async (req, res, next) => {
   }
   const product = await Product.findById(id)
     .exec()
-    .then(doc => doc);
-  const currentInventory = Number(product.inventory_count);
-  if (currentInventory < 1) {
-    res
-      .status(400)
-      .json({ message: `Product ${product.title} has no inventory available` });
-  } else {
-    Product.updateOne(
-      { _id: id },
-      { $set: { inventory_count: currentInventory - 1 } }
-    )
-      .exec()
-      .then(result => {
-        res.status(200).json({ message: `Product ${product.title} sold` });
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json(message);
+    .then(doc => doc)
+    .catch(err => {
+      console.log('Error retrieving product to purchase ', err);
+      res.status(400).json({
+        message: `Error retrieving product details. Usually it is because an incorrect id was provided. Could you double check the id ${id}`
       });
+    });
+
+  if (product) {
+    const currentInventory = Number(product.inventory_count);
+    if (currentInventory < 1) {
+      res.status(400).json({
+        message: `Product ${product.title} has no inventory available`
+      });
+    } else {
+      Product.updateOne(
+        { _id: id },
+        { $set: { inventory_count: currentInventory - 1 } }
+      )
+        .exec()
+        .then(result => {
+          res.status(200).json({ message: `Product ${product.title} sold` });
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json(message);
+        });
+    }
+  } else {
+    console.log('product not found id ', id);
+    res.status(400).json({ message: 'Product not found.' });
   }
 };
 module.exports = {
