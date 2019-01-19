@@ -3,6 +3,15 @@ const Product = require('../models/product');
 const formatMoney = require('../helpers/formatMoney');
 const message = { message: "An error has occurred. Please don't panic out!!!" };
 
+const displayItem = item => {
+  return {
+    id: item._id,
+    title: item.title,
+    price: formatMoney(item.price),
+    invnetory_count: item.inventory_count
+  };
+};
+
 const getAllProducts = (req, res, next) => {
   //1. Query all items
   Product.find()
@@ -19,12 +28,7 @@ const getAllProducts = (req, res, next) => {
             .filter(item => item.inventory_count > 0)
             .map(item => {
               if (item.inventory_count > 0) {
-                return {
-                  id: item._id,
-                  title: item.title,
-                  price: formatMoney(item.price),
-                  inventory_count: item.inventory_count
-                };
+                return displayItem(item);
               }
             });
 
@@ -38,12 +42,7 @@ const getAllProducts = (req, res, next) => {
         } else if (req.url === '/') {
           // 4. return all items with no filter
           const products = doc.map(item => {
-            return {
-              id: item._id,
-              title: item.title,
-              price: formatMoney(item.price),
-              inventory_count: item.inventory_count
-            };
+            return displayItem(item);
           });
           if (products.length < 1) {
             res.status(404).json({ message: 'No products in store' });
@@ -68,13 +67,7 @@ const getProductById = (req, res, next) => {
   Product.findById(id)
     .exec()
     .then(doc => {
-      if (doc)
-        return {
-          id: doc._id,
-          title: doc.title,
-          price: formatMoney(doc.price),
-          inventory_count: inventory_count
-        };
+      if (doc) return displayItem(doc);
       doc
         ? res.status(200).json(doc)
         : res.status(404).json({ message: 'No valid entry' });
