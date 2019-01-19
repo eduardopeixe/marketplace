@@ -39,8 +39,10 @@ app.use('/v1/products', productRoutes);
 
 // handling calls to non existing endpoints
 app.use((req, res, next) => {
+  res
+    .status(404)
+    .json({ message: 'The page you reach out to does not exist.' });
   const error = new Error('Page not found');
-  error.status = 404;
   next(error);
 });
 

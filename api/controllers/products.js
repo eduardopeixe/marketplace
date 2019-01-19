@@ -3,12 +3,16 @@ const Product = require('../models/product');
 const formatMoney = require('../helpers/formatMoney');
 const message = { message: "An error has occurred. Please don't panic out!!!" };
 
-const displayItem = item => {
+const displayItemList = item => {
   return {
     id: item._id,
     title: item.title,
     price: formatMoney(item.price),
-    invnetory_count: item.inventory_count
+    inventory_count: item.inventory_count,
+    request: {
+      method: 'GET',
+      url: 'http://localhost:3000/v1/products/' + item._id
+    }
   };
 };
 
@@ -28,7 +32,7 @@ const getAllProducts = (req, res, next) => {
             .filter(item => item.inventory_count > 0)
             .map(item => {
               if (item.inventory_count > 0) {
-                return displayItem(item);
+                return displayItemList(item);
               }
             });
 
@@ -42,7 +46,7 @@ const getAllProducts = (req, res, next) => {
         } else if (req.url === '/') {
           // 4. return all items with no filter
           const products = doc.map(item => {
-            return displayItem(item);
+            return displayItemList(item);
           });
           if (products.length < 1) {
             res.status(404).json({ message: 'No products in store' });
@@ -67,9 +71,13 @@ const getProductById = (req, res, next) => {
   Product.findById(id)
     .exec()
     .then(doc => {
-      if (doc) return displayItem(doc);
-      doc
-        ? res.status(200).json(doc)
+      const product = {
+        title: doc.title,
+        price: formatMoney(doc.price),
+        inventory_count: doc.inventory_count
+      };
+      product
+        ? res.status(200).json(product)
         : res.status(404).json({ message: 'No valid entry' });
     })
     .catch(err => {
@@ -79,7 +87,13 @@ const getProductById = (req, res, next) => {
 };
 
 const purchase = async (req, res, next) => {
+  console.log('ttttttttttt', req.params);
   const id = req.params.id;
+  if (!id) {
+    res
+      .send(400)
+      .json({ message: 'No product to purchase. Please provide ID' });
+  }
   const product = await Product.findById(id)
     .exec()
     .then(doc => doc);
