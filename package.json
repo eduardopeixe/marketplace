@@ -1,0 +1,24 @@
+{
+  "name": "marktplace",
+  "version": "1.0.0",
+  "description": "A barebones marketplace API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eduardopeixe/marktplace.git"
+  },
+  "author": "Eduardo Peixe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eduardopeixe/marktplace/issues"
+  },
+  "homepage": "https://github.com/eduardopeixe/marktplace#readme",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.4"
+  }
+}
