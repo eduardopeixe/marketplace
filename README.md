@@ -13,7 +13,7 @@ cd marketplace
 
 ## Part 1: Build the barebones of an online marketplace.
 
-This is a server side web api that can be used to fetch products, either one at a time or all at once. I also make possible passing an argument to list only products with available inventory. In additicion to that, products can be purchased, which will reduce inventory by 1.
+This is a server side web api that can be used to fetch products, either one at a time or all at once. I also make possible passing an argument to list only products with available inventory. In addition to that, products can be purchased, which will reduce inventory by 1.
 
 This is available in branch `barebones`.
 
@@ -34,11 +34,11 @@ npm start
 
 There are no requirements to add new products, update or delete them. So be careful to not purchase all the inventory.
 
-### 1. Fetach All Products
+### 1. Fetch All Products
 
-At this point you should be able to connect to [http://localhost:3000](http://localhost:3000)
+At this point, you should be able to connect to [http://localhost:3000](http://localhost:3000)
 
-If you get `"message": "The page you reach out to does not exist."` you're in the right path.
+If you get `"message": "The page you reach out to does not exist."` you're on the right path.
 
 Let's try an endpoint that should work[http://localhost:3000/v1/products](http://localhost:3000/v1/products)
 
@@ -60,10 +60,10 @@ This will display T-shirt details. Please replace T-shirt's ID (5c4133250610005c
 
 ### 4. Purchase a Product
 
-The forth endpoint cannot be tested from a browser. It uses PATCH method to update products' inventory_count. I use Postman for that. Using PATCH method, please go to:  
+The fourth endpoint cannot be tested from a browser. It uses PATCH method to update products' inventory_count. I use Postman for that. Using PATCH method, please go to:  
 [http://localhost:3000/v1/products/purchase/5c4133250610005cfdd312c8](http://localhost:3000/v1/products/purchase/5c4133250610005cfdd312c8).
 
-If there is T-shirt avaialble inventory you were presented with:  
+If there is T-shirt available inventory you were presented with:  
 `"message": "Product T-shirt purchased"`  
 And T-shirt's inventory_count is reduced by one.
 
@@ -76,5 +76,3 @@ By replacing T-shirt's ID (5c4133250610005cfdd312c8) you can purchase any other 
 This is the end of barebones marketplace. The next section will explain shopping cart functionality.
 
 ---
-
-## 2. Shopping Cart
