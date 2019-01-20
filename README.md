@@ -13,7 +13,7 @@ cd marketplace
 
 ## Part 1: Build the barebones of an online marketplace.
 
-This is a server-side web API that fetches products, either one at a time or all at once. I also make possible passing an argument to list only products with available inventory. In additicion to that, products can be purchased, which will reduce inventory by 1.
+This is a server side web api that can be used to fetch products, either one at a time or all at once. I also make possible passing an argument to list only products with available inventory. In addition to that, products can be purchased, which will reduce inventory by 1.
 
 This is available in branch `barebones`.
 
