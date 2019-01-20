@@ -34,7 +34,7 @@ npm start
 
 There are no requirements to add new products, update or delete them. So be careful to not purchase all the inventory.
 
-### 1. Fetach All Products
+### 1. Fetch All Products
 
 At this point you should be able to connect to [http://localhost:3000](http://localhost:3000)
 
@@ -63,18 +63,57 @@ This will display T-shirt details. Please replace T-shirt's ID (5c4133250610005c
 The forth endpoint cannot be tested from a browser. It uses PATCH method to update products' inventory_count. I use Postman for that. Using PATCH method, please go to:  
 [http://localhost:3000/v1/products/purchase/5c4133250610005cfdd312c8](http://localhost:3000/v1/products/purchase/5c4133250610005cfdd312c8).
 
-If there is T-shirt avaialble inventory you were presented with:  
-`"message": "Product T-shirt purchased"`  
+If there is T-shirt avaialble inventory you were presented with:
+
+`"message": "Product T-shirt purchased"`
+
 And T-shirt's inventory_count is reduced by one.
 
-However, if there is _NO_ available inventory you were presented with:  
-`"message": "Product T-shirt has no inventory available"`  
+However, if there is _NO_ available inventory you were presented with:
+
+`"message": "Product T-shirt has no inventory available"`
+
 And T-shirt's inventory_count is still ZERO.
 
 By replacing T-shirt's ID (5c4133250610005cfdd312c8) you can purchase any other product.
 
-This is the end of barebones marketplace. The next section will explain shopping cart functionality.
+This is the end of barebones marketplace. The next section will explain cart functionality.
 
 ---
 
 ## 2. Shopping Cart
+
+Now you can add products to a cart. Inventory will be affected only when cart is completed.
+
+Let's get started. From the marketplace directory, please do the following:
+
+```
+git checkout feature/shopping-cart
+npm install
+npm start
+```
+
+### What does it can do?
+
+1. List cart products
+2. Add product to cart
+3. Remove product from cart
+4. Complete cart
+
+### 1. List Cart Products
+
+Go to  
+[http://localhost:3000/cart](http://localhost:3000/cart)
+
+If there are items in the cart, you will see a list of products, however, if items no items in cart you see will see this:
+
+`"message": "Cart is empty. Please add products"`
+
+If you see this message, please go to next topic to know how to add products to cart.
+
+### 2. Add Product to Cart
+
+Using method 'POST', please go to
+[http://localhost:3000/v1/cart/5c4133250610005cfdd312c8](http://localhost:3000/v1/cart/5c4133250610005cfdd312c8)
+
+This will add a T-shirt to cart, however if there is no T-shirt avilable inventory, it will display an error:

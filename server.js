@@ -15,6 +15,7 @@ mongoose.connect(
 );
 
 const productRoutes = require('./api/routes/products');
+const cartRoutes = require('./api/routes/cart');
 
 const server = http.createServer(app);
 
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 
 // Routing to API endpoints
 app.use('/v1/products', productRoutes);
+app.use('/v1/cart', cartRoutes);
 
 // handling calls to non existing endpoints
 app.use((req, res, next) => {
