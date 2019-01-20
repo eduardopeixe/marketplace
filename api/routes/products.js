@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const checkAuth = require('../middleware/check-auth');
 const {
   getAllProducts,
   getProductById,
@@ -17,7 +18,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 //update a product
-router.patch('/purchase/:id', (req, res, next) => {
+router.patch('/purchase/:id', checkAuth, (req, res, next) => {
   purchase(req, res, next);
 });
 

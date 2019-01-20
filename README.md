@@ -150,8 +150,35 @@ Depending on what is in your car it will respond accordingly
 - Error if items in cart has quantity greater than inventory in store. It will ask to remove items from cart.
 
 If no error found, it will reduce inventory in store and remove all items from cart.
-<<<<<<< HEAD
 
 ---
-=======
->>>>>>> 0885e7a9102ee40a9f7cd308c4782e0c7400102b
+
+## 3. Add Security
+
+Let's required users to be logged in when buying products or handling shopping cart.
+
+First checkout the branch:
+
+```
+git checkout secure
+npm install
+npm start
+```
+
+A couple of endpoints were created - all them POST method
+Ensure to have a body in your calls, like :
+
+```
+{"email": "test@mail.com",
+ "password": "123"}
+```
+
+- sigup [http://localhost:3000/v1/users/sigup](http://localhost:3000/v1/users/sigup)
+- login [http://localhost:3000/v1/users/login](http://localhost:3000/v1/users/login)
+
+You can test the security of it with:
+
+- Purchase Product
+- Add Product to Cart
+- Remove Product from Cart
+- Complete Cart
