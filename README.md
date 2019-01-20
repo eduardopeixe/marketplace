@@ -150,5 +150,8 @@ Depending on what is in your car it will respond accordingly
 - Error if items in cart has quantity greater than inventory in store. It will ask to remove items from cart.
 
 If no error found, it will reduce inventory in store and remove all items from cart.
+<<<<<<< HEAD
 
 ---
+=======
+>>>>>>> 0885e7a9102ee40a9f7cd308c4782e0c7400102b
