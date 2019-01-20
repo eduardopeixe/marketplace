@@ -23,7 +23,7 @@ const getAllProducts = (req, res, next) => {
     .then(doc => {
       //2. Return error message if no items found
       if (doc.length <= 0)
-        res.status(200).json({ message: 'No products found' });
+        return res.status(200).json({ message: 'No products found' });
       else {
         //3. Return only items with available inventory
         //   if passed ?withInventory parameter
@@ -42,19 +42,19 @@ const getAllProducts = (req, res, next) => {
               .status(404)
               .json({ message: 'No products with available inventory' });
           }
-          res.status(200).json(products);
+          return res.status(200).json(products);
         } else if (req.url === '/') {
           // 4. return all items with no filter
           const products = doc.map(item => {
             return displayItemList(item);
           });
           if (products.length < 1) {
-            res.status(404).json({ message: 'No products in store' });
+            return res.status(404).json({ message: 'No products in store' });
           }
-          res.status(200).json(products);
+          return res.status(200).json(products);
         } else {
           const parameterUsed = req.url.substring(2, req.url.length);
-          res.status(400).json({
+          return res.status(400).json({
             message: `Invalid option ${parameterUsed}. Please use: ?withInventory to list only products with available inventory`
           });
         }
@@ -76,13 +76,13 @@ const getProductById = (req, res, next) => {
         price: formatMoney(doc.price),
         inventory_count: doc.inventory_count
       };
-      product
+      return product
         ? res.status(200).json(product)
         : res.status(404).json({ message: 'No valid entry' });
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json(message);
+      return res.status(500).json(message);
     });
 };
 
@@ -98,7 +98,7 @@ const purchase = async (req, res, next) => {
     .then(doc => doc)
     .catch(err => {
       console.log('Error retrieving product to purchase ', err);
-      res.status(400).json({
+      return res.status(400).json({
         message: `Error retrieving product details. Usually it is because an incorrect id was provided. Could you double check the id ${id}`
       });
     });
@@ -106,7 +106,7 @@ const purchase = async (req, res, next) => {
   if (product) {
     const currentInventory = Number(product.inventory_count);
     if (currentInventory < 1) {
-      res.status(400).json({
+      return res.status(400).json({
         message: `Product ${product.title} has no inventory available`
       });
     } else {
@@ -122,12 +122,12 @@ const purchase = async (req, res, next) => {
         })
         .catch(err => {
           console.log(err);
-          res.status(500).json(message);
+          return res.status(500).json(message);
         });
     }
   } else {
     console.log('product not found id ', id);
-    res.status(400).json({ message: 'Product not found.' });
+    return res.status(400).json({ message: 'Product not found.' });
   }
 };
 module.exports = {
