@@ -149,8 +149,91 @@ const removeItemFromCart = async (req, res, next) => {
     res.status(400).json({ message: `Item ${id} not found in cart.` });
   }
 };
-const completeCart = (req, res, next) => {
-  res.status(200).json({ message: 'completeCart' });
+const completeCart = async (req, res, next) => {
+  //1. Get all items from cart
+  const cartItems = await Cart.find()
+    .exec()
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ message: 'Error retrieving cart items' });
+    });
+
+  if (cartItems && cartItems.length > 0) {
+    //2. retrieve store items to cehck inventory
+    const store = await Product.find()
+      .exec()
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({ message: 'Error retrieveing  store products' });
+      });
+    //3. check if there is enough inventory to checkout
+    const errors = [];
+    cartItems.map(cartItem => {
+      const storeProduct = store.filter(product => {
+        console.log(typeof product._id, typeof cartItem._id);
+        console.log(
+          product._id.toString(),
+          cartItem._id,
+          product._id == cartItem._id
+        );
+        const prdId = product._id;
+        const cartId = cartItem._id;
+        console.log(prdId == cartId);
+
+        return product._id.toString() == cartItem._id.toString();
+      });
+      console.log(storeProduct);
+      const diff = storeProduct[0].inventory_count - cartItem.quantity;
+      if (diff < 0) {
+        errors.push({
+          cartItemError: `${cartItem.title} has quantity of ${
+            cartItem.quantity
+          }. Store inventory is ${
+            storeProduct[0].inventory_count
+          }. Please remove at least ${Math.abs(diff)} ${
+            cartItem.title
+          } from your cart.`
+        });
+      } else {
+        cartItem.inventoryUpdate = diff;
+      }
+    });
+    if (errors.length > 0) {
+      res.status(400).json({
+        message: `There are items with no avaliable inventory`,
+        errors
+      });
+    } else {
+      //4. update store and delete cart product
+      cartItems.map(cartItem => {
+        const id = cartItem._id.toString();
+        console.log(id);
+        //4.1 udpate store inventory
+        console.log('update store');
+        Product.updateOne(
+          { _id: id },
+          { $set: { inventory_count: cartItem.inventoryUpdate } }
+        )
+          .exec()
+          .then(doc => {
+            console.log(doc.title, 'store inventory update');
+          });
+        console.log('remove from cart');
+        Cart.deleteOne({ _id: id })
+          .exec()
+          .then(doc => {
+            console.log(doc.title, 'removed from cart ');
+          });
+      });
+      res.status(200).json({ message: 'Checkout complete. Thank you!' });
+    }
+    cartItems.map(item => {});
+  } else {
+    res.status(400).json({ message: 'Cart is empty. No items to checkout' });
+  }
+  res.status(200).send('tchaw');
+  //2. Check for inventory in store
+  //3. Cycle through cart updating store inventory and deleting cart item
 };
 
 module.exports = {

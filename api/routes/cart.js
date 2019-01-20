@@ -13,22 +13,17 @@ router.get('/', (req, res, next) => {
 });
 
 //add product to cart
-router.post('/:id', (req, res, next) => {
-  try {
-    addItemToCart(req, res, next);
-  } catch (err) {
-    console.log('errror returning from add item to cart' + err);
-    res.status(400).json(err);
-  }
+router.post('/add/:id', (req, res, next) => {
+  addItemToCart(req, res, next);
 });
 
 //remove product from cart
-router.patch('/:id', (req, res, next) => {
+router.patch('/remove/:id', (req, res, next) => {
   removeItemFromCart(req, res, next);
 });
 
 //Checkout - Complete cart
-router.post('/completeCart', (req, res, next) => {
+router.post('/complete', (req, res, next) => {
   completeCart(req, res, next);
 });
 

@@ -36,11 +36,15 @@ There are no requirements to add new products, update or delete them. So be care
 
 ### 1. Fetch All Products
 
-At this point you should be able to connect to [http://localhost:3000](http://localhost:3000)
+At this point you should be able to connect to
+
+[http://localhost:3000](http://localhost:3000)
 
 If you get `"message": "The page you reach out to does not exist."` you're in the right path.
 
-Let's try an endpoint that should work[http://localhost:3000/v1/products](http://localhost:3000/v1/products)
+Let's try an endpoint that should work
+
+[http://localhost:3000/v1/products](http://localhost:3000/v1/products)
 
 Now, if everything is right, you are seeing a list of products, which has title, price and inventory_count for each product. (it also has a link to open a single product's page)
 
@@ -50,12 +54,16 @@ Now, if everything is right, you are seeing a list of products, which has title,
 
 ### 2. List Products With Available Inventory
 
-Second endpoint is to list only products with available inventory. Please go to  
- [http://localhost:3000/v1/products?withInventory](http://localhost:3000/v1/products?withInventory)
+Second endpoint is to list only products with available inventory. Please go to
+
+[http://localhost:3000/v1/products?withInventory](http://localhost:3000/v1/products?withInventory)
 
 ### 3. List a Single Product
 
-The third endpoint is to list a single product. Please go to [http://localhost:3000/v1/products/5c4133250610005cfdd312c8](http://localhost:3000/v1/products/5c4133250610005cfdd312c8)  
+The third endpoint is to list a single product. Please go to
+
+[http://localhost:3000/v1/products/5c4133250610005cfdd312c8](http://localhost:3000/v1/products/5c4133250610005cfdd312c8)
+
 This will display T-shirt details. Please replace T-shirt's ID (5c4133250610005cfdd312c8) by any other product's ID to see product's details.
 
 ### 4. Purchase a Product
@@ -102,7 +110,8 @@ npm start
 
 ### 1. List Cart Products
 
-Go to  
+Go to
+
 [http://localhost:3000/cart](http://localhost:3000/cart)
 
 If there are items in the cart, you will see a list of products, however, if items no items in cart you see will see this:
@@ -114,6 +123,15 @@ If you see this message, please go to next topic to know how to add products to 
 ### 2. Add Product to Cart
 
 Using method 'POST', please go to
-[http://localhost:3000/v1/cart/5c4133250610005cfdd312c8](http://localhost:3000/v1/cart/5c4133250610005cfdd312c8)
 
-This will add a T-shirt to cart, however if there is no T-shirt avilable inventory, it will display an error:
+[http://localhost:3000/v1/cart/add/5c4133250610005cfdd312c8](http://localhost:3000/v1/cart/add/5c4133250610005cfdd312c8)
+
+This will add a T-shirt to cart, however if there is no T-shirt avaliable inventory, it will display an error.
+
+You can add any item with avaliable inventory to cart up to inventory_count limit.
+
+### 3. Remove Product from Cart
+
+Using method 'PATCH', please go to
+
+[http://localhost:3000/v1/cart/remove/5c4133250610005cfdd312c8](http://localhost:3000/v1/cart/remove/5c4133250610005cfdd312c8)
