@@ -41,7 +41,7 @@ app.use('/v1/products', productRoutes);
 app.use((req, res, next) => {
   res
     .status(404)
-    .json({ message: 'The page you reach out to does not exist.' });
+    .json({ message: "The page you're trying to connect does not exist" });
   const error = new Error('Page not found');
   next(error);
 });

@@ -82,14 +82,14 @@ const getProductById = (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(500).json(message);
+      return res.status(500).json(message);
     });
 };
 
 const purchase = async (req, res, next) => {
   const id = req.params.id;
   if (!id) {
-    res
+    return res
       .send(400)
       .json({ message: 'No product to purchase. Please provide ID' });
   }
@@ -98,15 +98,15 @@ const purchase = async (req, res, next) => {
     .then(doc => doc)
     .catch(err => {
       console.log('Error retrieving product to purchase ', err);
-      res.status(400).json({
-        message: `Error retrieving product details. Usually it is because an incorrect id was provided. Could you double check the id ${id}`
+      return res.status(400).json({
+        message: `Error retrieving product details. Usually it is due incorrect id provided. Could you double check the id ${id}`
       });
     });
 
   if (product) {
     const currentInventory = Number(product.inventory_count);
     if (currentInventory < 1) {
-      res.status(400).json({
+      return res.status(400).json({
         message: `Product ${product.title} has no inventory available`
       });
     } else {
@@ -116,18 +116,18 @@ const purchase = async (req, res, next) => {
       )
         .exec()
         .then(result => {
-          res
+          return res
             .status(200)
             .json({ message: `Product ${product.title} purchased` });
         })
         .catch(err => {
           console.log(err);
-          res.status(500).json(message);
+          return res.status(500).json(message);
         });
     }
   } else {
     console.log('product not found id ', id);
-    res.status(400).json({ message: 'Product not found.' });
+    return res.status(400).json({ message: 'Product not found.' });
   }
 };
 module.exports = {
