@@ -135,3 +135,20 @@ You can add any item with avaliable inventory to cart up to inventory_count limi
 Using method 'PATCH', please go to
 
 [http://localhost:3000/v1/cart/remove/5c4133250610005cfdd312c8](http://localhost:3000/v1/cart/remove/5c4133250610005cfdd312c8)
+
+This functionality will add a product to your cart with quantity equals 1. If the item is already in the cart it will increment quantity by 1.
+
+### 4. Complete cart
+
+Once more using 'POST', please go to
+
+[http://localhost:3000/v1/cart/complete](http://localhost:3000/v1/cart/complete)
+
+Depending on what is in your car it will respond accordingly
+
+- Error if no items in cart
+- Error if items in cart has quantity greater than inventory in store. It will ask to remove items from cart.
+
+If no error found, it will reduce inventory in store and remove all items from cart.
+
+---
