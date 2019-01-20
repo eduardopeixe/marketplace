@@ -98,8 +98,8 @@ const addItemToCart = async (req, res, next) => {
         } else {
           console.log(product.inventory_count, hasItemInCart.quantity);
           //4.1 update quantity in cart
-          const quantity = hasItemInCart.quantity + 1;
-          Cart.updateOne({ _id: id }, { $set: { quantity: quantity } })
+          const newQuantity = hasItemInCart.quantity + 1;
+          Cart.updateOne({ _id: id }, { $set: { quantity: newQuantity } })
             .exec()
             .then(result => {
               res
@@ -112,8 +112,42 @@ const addItemToCart = async (req, res, next) => {
     }
   }
 };
-const removeItemFromCart = (req, res, next) => {
-  res.status(200).json({ message: 'removeItemFromCart' });
+const removeItemFromCart = async (req, res, next) => {
+  const { id } = req.params;
+  //1. check if item is in cart
+  const itemInCart = await Cart.findById(id)
+    .exec()
+    .then(doc => doc)
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(`Error checking item ${id} in cart. `);
+    });
+  console.log(itemInCart);
+  if (itemInCart) {
+    //2. Check quantity of item in cart
+    if (itemInCart.quantity > 1) {
+      //2.1 Reduce quantity by 1
+      const newQuantity = itemInCart.quantity - 1;
+      Cart.updateOne({ _id: id }, { $set: { quantity: newQuantity } })
+        .exec()
+        .then(result => {
+          res
+            .status(200)
+            .json({ message: `Removed 1 ${itemInCart.title} from cart.` });
+        });
+    } else {
+      //2.2 remove item from cart
+      Cart.deleteOne({ _id: id })
+        .exec()
+        .then(doc => {
+          res
+            .status(200)
+            .json({ message: `${itemInCart.title} removed from cart.` });
+        });
+    }
+  } else {
+    res.status(400).json({ message: `Item ${id} not found in cart.` });
+  }
 };
 const completeCart = (req, res, next) => {
   res.status(200).json({ message: 'completeCart' });

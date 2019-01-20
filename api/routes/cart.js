@@ -22,8 +22,8 @@ router.post('/:id', (req, res, next) => {
   }
 });
 
-//remove product to cart
-router.delete('/:id', (req, res, next) => {
+//remove product from cart
+router.patch('/:id', (req, res, next) => {
   removeItemFromCart(req, res, next);
 });
 
