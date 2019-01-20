@@ -85,7 +85,9 @@ const loginUser = (req, res, next) => {
             }
           );
           console.log('user token ', token);
-          return res.status(200).json({ message: 'Log in successful' });
+          return res
+            .status(200)
+            .json({ message: 'Log in successful', token: `Bearer ${token}` });
         }
       });
     })
