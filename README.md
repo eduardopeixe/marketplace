@@ -185,7 +185,7 @@ You can test the security of it with:
 - Remove Product from Cart
 - Complete Cart
 
-In case you have Postman, please import a collection marktplace.coolection.json. You will find all kind of tests.
+In case you have Postman, please import a collection, file marktplace.coolection.json from the root folder. You will find all kind of tests in it.
 
 I hope you enjoy my app and I am looking forward to hearing your comments.
 
